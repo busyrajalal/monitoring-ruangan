@@ -13,16 +13,21 @@ Sebelum mengunggah kode program ke NodeMCU ESP8266, buka file program di folder 
 
 *   **Koneksi Wi-Fi:** Cari baris kode berikut dan sesuaikan dengan SSID serta password Wi-Fi di lokasi Anda agar alat bisa terhubung ke internet:
     ```cpp
-    const char* ssid = "NAMA_WIFI_ANDA";
-    const char* password = "PASSWORD_WIFI_ANDA";
+    const char* ssid     = "Nama WiFi";
+    const char* password = "Password";
+    const char* host     = "IP Kalian";
     ```
 *   **Target Pengiriman URL API:** Cari fungsi pengiriman data HTTP Request (`HTTPClient`) dan sesuaikan alamat IP Laptop/Server lokal Anda yang menjalankan CodeIgniter 4:
     ```cpp
-    // Sesuaikan IP Address Laptop Anda dan pastikan jalurnya mengarah ke api/update
-    String serverPath = "http://192.168.1.X:8080/api/update?"; 
-    serverPath += "suhu=" + String(suhu);
-    serverPath += "&kelembaban=" + String(kelembaban);
-    // ... parameter sensor lainnya ...
+      String Link = "http://" + String(host) + "/monitoring-ruangan/terima-data/" 
+                  + String(suhu, 1) + "/" 
+                  + String(hum, 0) + "/" 
+                  + String(gas) + "/" 
+                  + String(ppm_co2, 1) + "/" 
+                  + String(ppm_amonia, 1) + "/" 
+                  + String(ppm_benzena, 1) + "/" 
+                  + String(ppm_alkohol, 1) + "/" 
+                  + String(ppm_asap, 1);
     ```
 
 ### 2. 🗄️ Import Database MySQL
@@ -38,24 +43,16 @@ Buka folder source code website `monitoring-ruangan/` menggunakan text editor (V
 *   Jika berkas masih bernama `env`, ubah namanya terlebih dahulu menjadi **`.env`** (tambahkan tanda titik di depannya).
 *   Buka file `.env` tersebut, cari bagian konfigurasi **App URL** dan sesuaikan dengan alamat IP lokal komputer Anda saat ini:
     ```env
-    app.baseURL = 'http://192.168.1.X:8080/'
+    //Contoh IP :
+    app.baseURL = 'http://192.168.1.229/monitoring-ruangan/'
     ```
 *   Gulir ke bawah ke bagian **Database**, lalu sesuaikan nama database, username, serta password MySQL Anda:
     ```env
     database.default.hostname = 'localhost'
     database.default.database = 'dhtmq'  # Sesuaikan dengan nama DB yang di-import tadi
     database.default.username = 'root'
-    database.default.password = ''      # Kosongkan jika menggunakan bawaan XAMPP
+    database.default.password = ''     
     database.default.DBDriver = 'MySQLi'
     ```
 
 ---
-
-## 🚀 Cara Menjalankan Aplikasi Web
-1. Buka aplikasi **Terminal / Command Prompt / Git Bash** dan arahkan ke dalam folder `monitoring-ruangan/`.
-2. Jalankan server lokal CodeIgniter 4 dengan mengetik perintah:
-   ```bash
-   php spark serve --host 192.168.1.X
-   ```
-   *(Ganti `192.168.1.X` dengan IP laptop Anda saat ini agar website bisa diakses bersamaan oleh ESP8266 dalam satu jaringan Wi-Fi).*
-3. Buka browser Anda dan akses halaman utama dashboard di alamat: `http://192.168.1.X:8080/dashboard`.
