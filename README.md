@@ -16,9 +16,9 @@ Sebelum melakukan konfigurasi pada website, pastikan semua library dan core fram
   cd path/to/folder/monitoring-ruangan
   ```
 * Jalankan perintah berikut untuk menggunduh `vendor`:
-```bash
-composer install
-```
+  ```bash
+  composer install
+  ```
 * Tunggu hingga proses selesai. Langkah ini wajib dilakukan agar web server tidak mengalami error *Class not found*.
 
 ### 2.🔌 Konfigurasi Hardware (ESP8266 / Arduino IDE)
